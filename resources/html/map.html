@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>  
+  <head>
+    <title>Maps</title>
+    <meta charset="UTF-8" />
+    <style>
+      #map, #err {
+        z-index: -1;
+        left:0px; 
+        top:0px; 
+        width: 100%; 
+        height: 100%; 
+        position: absolute;
+      }
+     #err {
+	 display: none;
+	background: rgba(0,0,0,.8);
+     }
+     #err p {
+	color: #fff;
+	font-size: 26px;
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: 50%;
+	margin-left: -190px;
+	margin-top: -10px;
+     }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="err">
+      <p>Aucune information de localisation</p>
+    </div>
+    <script type="text/javascript" src="http://api.maps.nokia.com/2.2.4/jsl.js?with=all" charset="utf-8"></script>
+    <script type="text/javascript">
+    
+var TOUCH = nokia.maps.dom.Page.browser.touch;
+CLICK = TOUCH ? "tap" : "click";
+var MAP = {
+
+    m_map: null,
+    m_markers: null,
+    m_markerPosition: null,
+    m_infoBubbles: new nokia.maps.map.component.InfoBubbles(),
+
+    init: function(){
+	nokia.Settings.set( "appId", "ZTNA2uWOV5HzCRkctjC9");
+	nokia.Settings.set( "authenticationToken", "JU4LHerhIlhE1uC1A-_X8A");
+	nokia.Settings.set("defaultLanguage", "fr-FR");
+	document.getElementById("err").style.display = "none";
+	document.getElementById("map").style.display = "block";
+	this.m_map = new nokia.maps.map.Display(document.getElementById("map"), {
+	    zoomLevel: 8,
+	    components:[
+		new nokia.maps.map.component.Behavior(),
+		new nokia.maps.map.component.ZoomBar(),
+		new nokia.maps.map.component.PublicTransport(),
+		new nokia.maps.map.component.TypeSelector()
+	    ]
+	});
+	this.m_markers = new Array();
+//50,60568190
+//3,12320270
+	//this.findStations({lat: 50.60, long: 3.12});
+    },
+
+    setZoomLevel: function(zoomLevel){
+	this.m_map.setZoomLevel(zoomLevel);
+    },
+
+    setCenter: function(coords){
+	this.m_map.setCenter(new nokia.maps.geo.Coordinate(coords.lat, coords.long, coords.alt));
+	var marker = new nokia.maps.map.StandardMarker(new nokia.maps.geo.Coordinate(coords.lat, coords.long, coords.alt));
+	this.m_map.zoomTo(marker.getBoundingBox(), false, "default");
+    },
+
+    findStation: function(name,coords) {
+	var searchCenter = {latitude: coords.lat, longitude: coords.long};
+	var searchManager = nokia.places.search.manager;
+	var resultSet;
+	var self = this;
+	var processResults = function (data, requestStatus, requestId) {
+	    var i, len, locations, infoBubbles;
+	
+	    if (requestStatus == "OK") {
+		locations = data.results ? data.results.items : [data.location];
+		// We check that at least one location has been found
+		if (locations.length > 0) {
+		    // Remove results from previous search from the map
+		    if (resultSet) map.objects.remove(resultSet);
+		    resultSet = new nokia.maps.map.Container();
+		    for (i = 0, len = locations.length; i < len; i++) {
+			if(locations[i].category.name !== "Gare") continue;
+			if((locations[i].title.toLowerCase().indexOf(name.toLowerCase()) != -1) ||
+			    (Math.floor(parseFloat(locations[i].position.latitude) * 100) / 100 == Math.floor(parseFloat(coords.lat) * 100) / 100 ) && 
+			   (Math.floor(parseFloat(locations[i].position.longitude) * 100) / 100 == Math.floor(parseFloat(coords.long) * 100) / 100 )
+			  )
+			  {
+			      var marker = new nokia.maps.map.StandardMarker(locations[i].position, { text: "" });
+			      marker.$location = locations[i];
+			      if(window.qml)
+				  window.qml.qmlCall(JSON.stringify(locations[i]));
+			      resultSet.objects.add(marker);
+			  }
+		    }
+		    if(resultSet.objects.getLength() > 0) {
+			// Next we add the marker(s) to the map's object collection so they will be rendered onto the map
+			//self.m_map.objects.add(resultSet);
+			// We zoom the map to a view that encapsulates all the markers into map's viewport
+			self.m_map.zoomTo(resultSet.getBoundingBox(), false);
+			
+			resultSet.addListener(CLICK, function (evt) {
+			    var marker = evt.target,
+			    loc = marker.$location;
+			    if (loc && window.qml) {
+				window.qml.qmlCall(JSON.stringify(loc));
+			    }
+			});
+			document.getElementById("err").style.display = "none";
+		    } else {
+			//document.getElementById("err").style.display = "block";
+			var marker = new nokia.maps.map.StandardMarker({latitude: coords.lat, longitude: coords.long}, { text: "G" });
+			self.m_map.objects.add(marker);
+			self.m_map.zoomTo(marker.getBoundingBox(), false);
+		    }
+		} else { 
+		    alert("Your search produced no results!");
+		    document.getElementById("err").style.display = "block";
+		}
+	} else {
+		alert("The search request failed");
+	}
+	};
+
+	var category = "transport";
+	searchManager.findPlacesByCategory({
+	    category: category,
+	    useGeoLocation: false,
+	    onComplete: processResults,
+	    searchCenter: searchCenter
+	});
+    },
+
+    setCurrentPosition: function (coords){
+	try {
+	    if(this.m_markerPosition != null)
+		return;
+	    this.m_markerPosition= new nokia.maps.map.StandardMarker(new nokia.maps.geo.Coordinate(coords.lat, coords.long, coords.alt));
+	    this.m_map.objects.add(this.m_markerPosition);
+	    this.m_map.setCenter(new nokia.maps.geo.Coordinate(coords.lat, coords.long, coords.alt));
+	} catch(err) {
+	    alert(err);
+	}
+    },
+
+    addMarker: function (options){
+	try {
+	    if(options && options.infos && options.coords) {
+		if(this.m_markers[options.coords.lat + "_" + options.coords.long + "_" + options.coords.alt])
+		    return;
+		var htmlStr = ['<div>',
+			       '<h2>' , options.infos.title  , '</h2>',
+			       '<img width=120 height=90 src=',
+			       '"', options.infos.img , '"',
+			       'alt=""/><br/>',
+			       '<p>'+ options.infos.text +'</p></div>'].join('');
+		var infoBubbles = new nokia.maps.map.component.InfoBubbles();
+		this.m_map.addComponent(infoBubbles);
+		
+		var marker = new nokia.maps.map.StandardMarker(new nokia.maps.geo.Coordinate(options.coords.lat, options.coords.long, options.coords.alt)); 
+		marker.addListener(
+		    CLICK, 
+		    function (evt) { 
+			infoBubbles.openBubble(htmlStr, marker.coordinate);
+		    }
+		);
+		
+		this.m_map.objects.addAll([marker]);
+		//this.m_map.zoomTo(marker.getBoundingBox(), true, "default");
+		this.m_markers[options.coords.lat + "_" + options.coords.long + "_" + options.coords.alt] = marker;
+	    }
+	} catch(err) {
+	    alert(err);
+	}
+    },
+
+    removeMarker: function (options){
+	try {
+	    if(options && options.coords) {
+		var marker = this.m_markers[options.coords.lat + "_" + options.coords.long + "_" + options.coords.alt];
+		if(!marker)
+		    return;
+		
+		this.m_map.objects.removeAll([marker]);
+	    }
+	} catch(err) {
+	    alert(err);
+	}
+    },
+
+    removeAllMarkers: function(){
+	try {
+	    var self = this;
+	    self.m_map.objects.clear();
+	    this.m_markers = new Array();
+	} catch(err) {
+	    alert(err);
+	}
+    },
+
+    aroundMe: function(options){
+	if(!options && !options.markers && !options.radius)
+	    return;
+	var self = this;
+	this.m_map.objects.clear();
+	
+	var resultSet = new nokia.maps.map.Container();
+	resultSet.objects.add(this.m_markerPosition);
+
+	self.m_map.removeComponent(this.m_infoBubbles);
+	this.m_infoBubbles = new nokia.maps.map.component.InfoBubbles();
+	self.m_map.addComponent(this.m_infoBubbles);
+
+	this.m_map.objects.add(new nokia.maps.map.Circle(
+	    self.m_map.center,
+	    options.radius
+	));
+	options.markers.forEach(function(m){
+	    var htmlStr = ['<div class="bubble">',
+			   '<h2><a href="javascript:void(0);" onclick="MAP.onStationClicked(\'', m.infos.id ,'\', \'', m.infos.title ,'\',', m.coords.lat, ',', m.coords.long,')">' , 
+			   m.infos.title  , '</a></h2>',
+			   '<p>'+ m.infos.text +'</p></div>'].join('');
+	    
+	    
+	    var marker = new nokia.maps.map.StandardMarker(new nokia.maps.geo.Coordinate(m.coords.lat, m.coords.long, m.coords.alt), {text: "G"});
+	    marker.html = htmlStr;
+	    resultSet.objects.add(marker);
+	   
+	});
+	self.m_map.objects.add(resultSet);
+	self.m_map.zoomTo(resultSet.getBoundingBox(), false);
+
+	resultSet.addListener(CLICK, function (evt) {
+	    var marker = evt.target;
+	    self.m_infoBubbles.addBubble(marker.html, marker.coordinate);
+	    self.m_infoBubbles.openBubble(marker.html, marker.coordinate);
+	});
+    },
+    
+    onStationClicked: function(id, name, lat,lon){
+	if (id && window.qml) {
+	    window.qml.selectStation(id, name, lat, lon);
+	}
+    }
+}
+
+
+MAP.init();
+     </script>
+    </body>
+</html>
