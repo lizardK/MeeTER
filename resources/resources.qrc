@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>pix/Logo_Gare.svg</file>
         <file>pix/Logo_train_transilien.svg</file>
-        <file>pix/arraow_next.png</file>
         <file>pix/calendar.png</file>
         <file>pix/phone.png</file>
         <file>pix/time.png</file>
@@ -15,5 +14,6 @@
         <file>pix/circle.png</file>
         <file>pix/MeeTER-80.png</file>
         <file>html/map.html</file>
+        <file>etc/meeter.conf</file>
     </qresource>
 </RCC>

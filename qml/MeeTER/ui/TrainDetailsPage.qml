@@ -29,7 +29,7 @@ import "../js/utils.js" as Utils
 
 Page {
     id: trainDetails
-    tools: toolBar2
+    tools: toolBarTrainDetails
     property string travelID
     property string from
     property string to
@@ -38,7 +38,7 @@ Page {
     property date date
 
     ToolBar{
-        id:toolBar2
+        id:toolBarTrainDetails
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
         tools:  ToolBarLayout {
@@ -252,7 +252,7 @@ Page {
                             platformStyle: LabelStyle {
                                 fontFamily: "Arial"
                                 fontPixelSize: 22
-                                textColor: "#333"
+                                textColor: theme.inverted?"#fff" : "#333"
                             }
                         }
 

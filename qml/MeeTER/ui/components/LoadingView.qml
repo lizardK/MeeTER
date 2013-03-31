@@ -25,7 +25,7 @@ import com.nokia.meego 1.1
 Rectangle {
     id: loadingView
     width: parent.width; height: parent.height
-    color: "white"
+    color: theme.inverted? "black" : "white"
     opacity: 1
     visible: true
     BusyIndicator{

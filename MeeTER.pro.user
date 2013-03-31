@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by Qt Creator 2.4.1, 2013-03-30T18:14:37. -->
+<!-- Written by Qt Creator 2.4.1, 2013-03-31T20:01:28. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -173,16 +173,20 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">MaemoUploadAndInstallDpkgPackageStep</value>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles">
+       <value type="QString">/home/cyril/MeeTER-build-harmattan-Harmattan_Target_-_QEmu_PR1_2__Qt_SDK__Release/meeter_0.0.2_armel.deb</value>
        <value type="QString">/home/cyril/MeeTER-build-harmattan-Harmattan_Target_-_QEmu_PR1_2__Qt_SDK__Release/meeter_0.0.1_armel.deb</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
        <value type="QString">192.168.0.10</value>
+       <value type="QString">192.168.0.10</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedRemotePaths">
        <value type="QString"></value>
+       <value type="QString"></value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2013-03-30T18:01:56</value>
+       <value type="QDateTime">2013-03-31T19:58:26</value>
+       <value type="QDateTime">2013-03-31T16:02:33</value>
       </valuelist>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">3</value>

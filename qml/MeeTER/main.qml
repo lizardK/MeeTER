@@ -33,7 +33,7 @@ PageStackWindow {
     }
 
     Component.onCompleted: {
-        //theme.inverted = true;
+        theme.inverted = appSettings.getValue("APPEARANCE/theme") === "dark";
     }
 
     ToolBarLayout {
@@ -44,14 +44,7 @@ PageStackWindow {
             iconId: "toolbar-back";
             onClicked: { myMenu.close(); pageStack.pop(); }
         }
-      /*  ToolIcon {
-            id: toolButtonAddAlarm
-            iconId: "toolbar-alarm";
-            visible: false
-            onClicked: {
 
-            }
-        }*/
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             anchors.right: (parent === undefined) ? undefined : parent.right
@@ -63,11 +56,11 @@ PageStackWindow {
         id: myMenu
         visualParent: pageStack
         MenuLayout {
-           /* MenuItem {
+            MenuItem {
                 id: itParameters
                 text: qsTr("Paramètres")
                 onClicked:  pageStack.push(Qt.resolvedUrl("ui/ParametersPage.qml"));
-            }*/
+            }
             MenuItem {
                 id: itAbout
                 text: qsTr("A propos")

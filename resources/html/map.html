@@ -70,6 +70,10 @@ var MAP = {
 	this.m_map.setZoomLevel(zoomLevel);
     },
 
+    setMapType: function(mapType){
+	this.m_map.set("baseMapType", nokia.maps.map.Display[mapType]);
+    },
+
     setCenter: function(coords){
 	this.m_map.setCenter(new nokia.maps.geo.Coordinate(coords.lat, coords.long, coords.alt));
 	var marker = new nokia.maps.map.StandardMarker(new nokia.maps.geo.Coordinate(coords.lat, coords.long, coords.alt));

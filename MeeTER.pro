@@ -33,6 +33,7 @@ CONFIG += qdeclarative-boostable
 SOURCES += src/main.cpp
 
 # Please do not modify the following two lines. Required for deployment.
+include(src/settings/settings.pri)
 include(src/qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 

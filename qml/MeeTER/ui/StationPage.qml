@@ -23,10 +23,11 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 import "components"
 import "../services/services.js" as Services
+import "../js/utils.js" as Utils
 
 Page {
     id: stationPage
-    tools: commonTools
+    tools: toolBarStation
 
     property string stationID
     property string stationName
@@ -37,7 +38,47 @@ Page {
 
     Component.onCompleted: {
         map.reload();
-        toolButtonBack.visible = true;
+    }
+
+    ToolBar{
+        id:toolBarStation
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        tools:  ToolBarLayout {
+            id: trainDetailsTool
+            visible: true
+            ToolIcon {
+                id: toolButtonBack
+                iconId: "toolbar-back";
+                onClicked: { myMenu.close(); pageStack.pop(); }
+            }
+            ToolIcon {
+                id: toolButtonAddFavourite
+                iconId: appSettings.checkValueArray("FAVOURITES/station", "id", stationID)? "toolbar-favorite-mark": "toolbar-favorite-unmark";
+                visible: true
+                onClicked: {
+                    if(!appSettings.checkValueArray("FAVOURITES/station", "id", stationID)) {
+                        appSettings.appendToArray( "FAVOURITES/station", {
+                                                      "id": stationID ,
+                                                      "name": stationName,
+                                                      "city":  stationCity,
+                                                      "country": stationCountry,
+                                                      "lat" :stationLatitude,
+                                                      "lon" :  stationLongitude
+                                                  });
+                        toolButtonAddFavourite.iconId = "toolbar-favorite-mark";
+                    } else {
+                        appSettings.removeArrayEntry( "FAVOURITES/station", appSettings.getIndexOfValueInArray("FAVOURITES/station", "id", stationID) );
+                        toolButtonAddFavourite.iconId = "toolbar-favorite-unmark";
+                    }
+                }
+            }
+            ToolIcon {
+                platformIconId: "toolbar-view-menu"
+                anchors.right: (parent === undefined) ? undefined : parent.right
+                onClicked: (myMenu.status === DialogStatus.Closed) ? myMenu.open() : myMenu.close()
+            }
+        }
     }
 
     LoadingView{
@@ -104,6 +145,7 @@ Page {
                         font.bold: true
                         font.pixelSize: 20
                         wrapMode: Text.WordWrap
+                        color: theme.inverted? "#fff" : "#000"
                     }
                     Text {
                         id: txtAddr
@@ -111,7 +153,8 @@ Page {
                         text:  (map.stationInformations) ? map.stationInformations.address.text : ""
                         font.bold: false
                         font.pixelSize: 16
-                        color: "#333"
+                        color: theme.inverted? "#999" :  "#777"
+
                         wrapMode: Text.WordWrap
                     }
                 }
@@ -192,10 +235,13 @@ Page {
                         }
 
                         Image {
-                            anchors.left: x.right
-                            anchors.top: parent.top
-                            anchors.topMargin: -25
-                            source:  "qrc:/pix/arraow_next.png"
+                            id: imgNext
+                            anchors{
+                                right: parent.right
+                                top: parent.top
+                                topMargin: parent.height / 2 - imgNext.height / 2
+                            }
+                            source: Utils.handleIconSource("toolbar-next")
                         }
 
                     }

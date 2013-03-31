@@ -59,7 +59,6 @@ Page {
             for ( var index in data  )
             {
                  var dt = new Date(date.split(" / ")[2], parseInt(date.split(" / ")[1]) - 1, date.split(" / ")[0], data[index].st.split(":")[0], data[index].st.split(":")[1]);
-                console.log(date);
                 trainsModel.append( {
                                        id:data[index].id,
                                        routeName:data[index].rn,

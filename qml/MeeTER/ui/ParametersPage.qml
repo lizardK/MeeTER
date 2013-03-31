@@ -35,30 +35,32 @@ Page {
         title: "Paramètres"
     }
 
-    SectionHeader {
-        id: headerApparence
-        title: qsTr("Apparence")
-        anchors {
-            top: headerParameters.bottom
-            topMargin: 20
-            bottomMargin: 20
-        }
-    }
-
     Flickable {
         width: parent.width - 20
         x: 10
         anchors{
-            top: headerApparence.bottom
+            top: headerParameters.bottom
             topMargin: 20
         }
+
+        SectionHeader {
+            id: headerApparence
+            title: qsTr("Apparence")
+            anchors {
+                top:parent.top
+                topMargin: 20
+                bottomMargin: 20
+            }
+        }
+
         Label {
             id: lblStyle
-           anchors.top: parent.top
+            anchors.top: headerApparence.bottom
             text: qsTr("Style du thème :")
         }
 
         ButtonRow {
+            id: btnsAppearance
             anchors {
                 top: lblStyle.bottom
                 topMargin: 10
@@ -66,11 +68,65 @@ Page {
             }
             Button {
                 text: "Clair"
-                onClicked: theme.inverted = false;
+                checked: appSettings.getValue("APPEARANCE/theme") === "clear";
+                onClicked: {
+                    theme.inverted = false;
+                    appSettings.setValue("APPEARANCE/theme", "clear");
+                }
             }
             Button {
                 text: "Sombre"
-                onClicked: theme.inverted = true;
+                checked: appSettings.getValue("APPEARANCE/theme") === "dark";
+                onClicked: {
+                    theme.inverted = true;
+                    appSettings.setValue("APPEARANCE/theme", "dark");
+                }
+            }
+        }
+
+        SectionHeader {
+            id: headerMapStyle
+            title: qsTr("Carte")
+            anchors {
+                top: btnsAppearance.bottom
+                topMargin: 20
+                bottomMargin: 20
+            }
+        }
+
+        Label {
+            id: lblMapStyle
+            anchors.top: headerMapStyle.bottom
+            text: qsTr("Style de la carte :")
+        }
+
+        ButtonRow {
+            id: btnsMapStyle
+            anchors {
+                top: lblMapStyle.bottom
+                topMargin: 10
+                horizontalCenter: parent.horizontalCenter
+            }
+            Button {
+                text: "Carte"
+                checked: appSettings.getValue("APPEARANCE/map") === "NORMAL";
+                onClicked: {
+                    appSettings.setValue("APPEARANCE/map", "NORMAL");
+                }
+            }
+            Button {
+                text: "Relief"
+                checked: appSettings.getValue("APPEARANCE/map") === "TERRAIN";
+                onClicked: {
+                    appSettings.setValue("APPEARANCE/map", "TERRAIN");
+                }
+            }
+            Button {
+                text: "Satellite"
+                checked: appSettings.getValue("APPEARANCE/map") === "SATELLITE";
+                onClicked: {
+                    appSettings.setValue("APPEARANCE/map", "SATELLITE");
+                }
             }
         }
     }

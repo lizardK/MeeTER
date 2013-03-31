@@ -58,7 +58,6 @@ Page {
             page = data.np;
             for ( var index in data.t  )
             {
-
                 var dt = new Date();
                 dt.setHours(data.t[index].st.split(":")[0]);
                 dt.setMinutes(data.t[index].st.split(":")[1]);
@@ -88,7 +87,7 @@ Page {
 
     PageHeader {
         id: pageHeader
-        title: "Tous les trains"
+        title: qsTr("Prochains départs")
     }
 
     ListView {
@@ -177,9 +176,9 @@ Page {
                                 x: 10
                                 text:  from
                                 platformStyle: LabelStyle {
+                                     textColor: theme.inverted? "#fff" :  "#777"
                                     fontFamily: "Arial"
                                     fontPixelSize: 22
-                                    textColor: "#333"
                                 }
                             }
                         }
@@ -194,15 +193,16 @@ Page {
                                     fontPixelSize: 22
                                     textColor: "#04AEDA"
                                 }
+
                             }
                             Label {
                                 id: lblTo
                                 x: 10; y:5
                                 text:  to
                                 platformStyle: LabelStyle {
+                                     textColor: theme.inverted? "#fff" :  "#777"
                                     fontFamily: "Arial"
                                     fontPixelSize: 22
-                                    textColor: "#333"
                                 }
                             }
                         }

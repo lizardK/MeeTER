@@ -60,13 +60,22 @@ Item {
                 }
             }
         ]
-        onLoadFinished: mapItem.loaded()
+        onLoadFinished: {
+            setMapType(appSettings.getValue("APPEARANCE/map"));
+            mapItem.loaded();
+        }
         onAlert: console.log(message)
 
     }
 
     function reload() {
         mapWebView.reload.trigger();
+    }
+
+    function setMapType(type){
+        var s = ['MAP.setMapType("', type , '")'].join('');
+        console.log(s);
+        mapWebView.evaluateJavaScript(s);
     }
 
     function setZoomLevel(zoomLevel){

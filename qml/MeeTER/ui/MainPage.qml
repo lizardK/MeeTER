@@ -21,15 +21,14 @@
 ****************************************************************************/
 import QtQuick 1.1
 import com.nokia.meego 1.1
+import "../js/utils.js" as Utils
 import "components"
 
 Page {
     id: home
     tools: commonTools
 
-    Component.onCompleted: {
-
-    }
+    Component.onCompleted: {}
 
     onVisibleChanged: {
         toolButtonBack.visible = !visible;
@@ -50,9 +49,18 @@ Page {
         }
         clip: true
 
-
-
         model: ListModel{
+            id: listMenuModel
+            Component.onCompleted: {
+                 if(appSettings.contains("FAVOURITES/station/size") && appSettings.getValue("FAVOURITES/station/size") > 0) {
+                   listMenuModel.append( {
+                                             name: "Favoris",
+                                             desc: "Mes gares favorites",
+                                             page: "FavouritesPage.qml"
+                                         });
+                }
+            }
+
             ListElement {
                 name: "Autour de moi"
                 desc: "Rechercher des gares à proximité"
@@ -68,6 +76,7 @@ Page {
                 desc: "Recherche avancée"
                 page: "SearchPage.qml"
             }
+
         }
         delegate: menuItemDelegate
     }
@@ -112,7 +121,7 @@ Page {
                             x: 10;  y: 15
                             text:  desc
                             platformStyle: LabelStyle {
-                                textColor: "#333"
+                                textColor: theme.inverted? "#999" :  "#333"
                                 fontFamily: "Arial"
                                 fontPixelSize: 18
                             }
@@ -121,12 +130,13 @@ Page {
                 }
 
                 Image {
+                    id: imgNext
                     anchors{
-                        left: x.right
+                        right: parent.right
                         top: parent.top
-                        topMargin: -25
+                        topMargin: parent.height / 2 - imgNext.height / 2
                     }
-                    source:  "qrc:/pix/arraow_next.png"
+                    source: Utils.handleIconSource("toolbar-next")
                 }
 
             }

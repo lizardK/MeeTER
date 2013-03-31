@@ -37,11 +37,16 @@ Rectangle {
     Label  {
         id: txt
         text:  sectionHeader.title
-        anchors.left: line.right
-        anchors.leftMargin: 10
+        anchors {
+            left: line.right
+            leftMargin: 10
+        }
         font.bold: true
-        font.pixelSize: 16
-        color: "#777"
+        platformStyle: LabelStyle {
+             textColor: theme.inverted? "#999" :  "#777"
+            fontFamily: "Arial"
+            fontPixelSize: 16
+        }
     }
 
     Rectangle {

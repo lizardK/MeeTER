@@ -26,7 +26,7 @@ import "../services/services.js" as Services
 import "../js/utils.js" as Utils
 
 Page {
-    id: allStations
+    id: favourites
     tools: commonTools
 
     property bool updateItemVisibleState:false
@@ -35,11 +35,11 @@ Page {
         toolButtonBack.visible = true;
     }
 
-    ListModel {
-        id: filterStationsModel
-    }
+    ListModel{
+       id: stationsModelFiltered
+   }
 
-    LoadingView{
+     LoadingView{
         id: loading
     }
 
@@ -53,44 +53,35 @@ Page {
 
     ListModel {
         id:stationsModel
-        Component.onCompleted: Services.fetchAllStations(stationsModel)
-        function onFetch(data){
-
-            for ( var index in data  ){
+        Component.onCompleted: {
+            var stations = eval ( appSettings.getArrayJson("FAVOURITES/station") );
+            stationsModel.clear();
+            for (var i=0; i<stations.length; i++) {
                 stationsModel.append( {
-                                         id:data[index].id,
-                                         name:data[index].n,
-                                         city:data[index].ct,
-                                         country: data[index].c,
-                                         lat:data[index].coords.lat,
-                                         lon: data[index].coords.lon,
-                                         alphabet: data[index].ct.substring(0,1)
+                                         id:stations[i].id,
+                                         name:stations[i].name,
+                                         city:stations[i].city,
+                                         country: stations[i].country,
+                                         lat:stations[i].lat,
+                                         lon: stations[i].lon
                                      });
-
-                filterStationsModel.append( {
-                                               id:data[index].id,
-                                               name:data[index].n,
-                                               city:data[index].ct,
-                                               country: data[index].c,
-                                               lat:data[index].coords.lat,
-                                               lon: data[index].coords.lon,
-                                               alphabet: data[index].ct.substring(0,1)
-                                           });
+                stationsModelFiltered.append( {
+                                         id:stations[i].id,
+                                         name:stations[i].name,
+                                         city:stations[i].city,
+                                         country: stations[i].country,
+                                         lat:stations[i].lat,
+                                         lon: stations[i].lon
+                                     });
             }
             loading.visible = false;
             noResults.visible = stationsModel.count == 0;
-        }
-        function onFetchError(msg){
-            console.log(msg);
-            loading.visible = false;
-            noResults.visible = false;
-            errorView.visible = true;
         }
     }
 
     PageHeader {
         id: pageHeader
-        title: qsTr("Toutes les gares")
+        title: qsTr("Mes gares favorites")
     }
 
     Timer{
@@ -103,15 +94,15 @@ Page {
     }
 
     ListView {
-        id: listViewAllStations
-        width: allStations.width; height: parent.height - pageHeader.height
+        id: listViewFavourites
+        width: favourites.width; height: parent.height - pageHeader.height
         anchors.top: pageHeader.bottom
         clip: true
-        model: filterStationsModel
+        model: stationsModelFiltered
 
         header:  TextField {
             id:searchField;
-            width: allStations.width; height: 60
+            width: favourites.width; height: 60
             visible:updateItemVisibleState?true:false
             inputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
             placeholderText: (searchField.state == "visible")?qsTr("Recherche"):""
@@ -127,20 +118,20 @@ Page {
                     anchors.fill: parent
                     onClicked: {
                         searchField.text = "";
-                        filterStationsModel.clear();
+                        stationsModelFiltered.clear();
                         for (var i = 0; i < stationsModel.count; i++) {
-                            filterStationsModel.append(stationsModel.get(i));
+                            stationsModelFiltered.append(stationsModel.get(i));
                         }
                     }
                 }
             }
 
             onTextChanged: {
-                filterStationsModel.clear();
+                stationsModelFiltered.clear();
 
                 for (var i = 0; i < stationsModel.count; i++) {
                     if(stationsModel.get(i).name.toLowerCase().indexOf(searchField.text.toLowerCase()) !== -1)
-                        filterStationsModel.append(stationsModel.get(i));
+                        stationsModelFiltered.append(stationsModel.get(i));
                 }
                 searchField.focus = true
             }
@@ -157,21 +148,21 @@ Page {
             searchTimer.start()
         }
         onContentYChanged: {
-            if(listViewAllStations.contentY < -50){
+            if(listViewFavourites.contentY < -50){
                 updateItemVisibleState = true
             }
         }
     }
 
-    ScrollDecorator { flickableItem: listViewAllStations }
-    SectionScroller { listView: listViewAllStations; }
+    ScrollDecorator { flickableItem: listViewFavourites }
+    SectionScroller { listView: listViewFavourites; }
 
     Component {
         id: listDelegate
 
         Item {
             id: menuItem
-            width: listViewAllStations.width;height: 80
+            width: listViewFavourites.width;height: 80
             MouseArea {
                 anchors.fill: parent
                 onClicked:{
@@ -181,7 +172,7 @@ Page {
 
             Rectangle {
                 id: rect
-                width:  listViewAllStations.width;height: parent.height
+                width:  listViewFavourites.width;height: parent.height
                 color: "transparent"
 
                 Rectangle {

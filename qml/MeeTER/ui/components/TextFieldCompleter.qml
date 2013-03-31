@@ -39,7 +39,6 @@ Item {
     TextField {
         id: searchField
         width: parent.width
-        //enableSoftwareInputPanel: true
         inputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
 
         onTextChanged: {
@@ -85,8 +84,9 @@ Item {
         }
         width: searchField.width; height: 500
         visible: false
-        color:"#E0E1E2"
+        color: theme.inverted ? "#000" :"#E0E1E2"
         z: 100
+
         ListView {
             id: autoCompleteList
             model: filterModel
@@ -95,13 +95,13 @@ Item {
             visible: parent.visible
             clip: true
             delegate: Rectangle {
-                width: autoCompleteList.width - 10; height: 70
-                x: 5
+                width: autoCompleteList.width - 20; height: 70
+                x: 10
                 color: "transparent"
                 Label{
                     id: lblName
                     text: name
-                    anchors.top: parent.top
+                    height: parent.height
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
