@@ -59,6 +59,7 @@ Page {
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
                 onLinkActivated: Qt.openUrlExternally(link);
+                color: theme.inverted? "#fff" : "#000"
             }
 
             SectionHeader {
@@ -90,6 +91,7 @@ Page {
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
                 onLinkActivated: Qt.openUrlExternally(link);
+                color: theme.inverted? "#fff" : "#000"
             }
         }
     }

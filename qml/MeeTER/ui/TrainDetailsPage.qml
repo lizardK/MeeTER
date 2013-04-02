@@ -79,6 +79,7 @@ Page {
 
     QueryDialog {
         id: dlgQueryAddToOrganizer
+        visualParent: parent
         titleText:  qsTr("Agenda")
         message: qsTr("Voulez-vous ajouter ce voyage à l'agenda ?")
         acceptButtonText: qsTr("Ajouter")
