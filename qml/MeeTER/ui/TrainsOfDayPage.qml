@@ -96,6 +96,7 @@ Page {
         model: trainsOfDayModel
         width: parent.width; height: parent.height - pageHeader.height
         delegate: listDelegate
+        clip:true
         onAtYEndChanged: {
             if (listTravels.atYEnd && page !== -1) {
                 loading.visible = true;

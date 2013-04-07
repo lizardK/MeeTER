@@ -54,7 +54,7 @@ Page {
                 iconId: "toolbar-add";
                 visible: true
                 onClicked: {
-                    dlgQueryAddToOrganizer.open()
+                   dlgQueryAddToOrganizer.open();
                 }
             }
             ToolIcon {
@@ -89,7 +89,6 @@ Page {
             orgaModel.update()
         }
     }
-
 
     LoadingView{
         id: loading

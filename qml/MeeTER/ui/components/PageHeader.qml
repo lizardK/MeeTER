@@ -28,7 +28,7 @@ Rectangle{
 
     anchors.top:parent.top; anchors.left: parent.left; anchors.right: parent.right
     width: parent.width ; height: parent.height/10
-    color: "#04AEDA"
+    color: theme.inverted ? "transparent" :  "#04AEDA"
     z: 10
     Row {
         x: 10
@@ -42,7 +42,6 @@ Rectangle{
 
         Text {
             id: titleText
-           // height: header.height - 20
             y: header.height / 2 - titleText.height / 2
             font.bold: true
             font.pointSize: 22
@@ -50,7 +49,12 @@ Rectangle{
             wrapMode: Text.WordWrap
             color: "#fff"
         }
-
+    }
+    Rectangle {
+        width: parent.width; height: 1
+        anchors.top: parent.bottom
+        border.width: 1
+        border.color: theme.inverted ? "#fff" : "transparent"
     }
 }
 
