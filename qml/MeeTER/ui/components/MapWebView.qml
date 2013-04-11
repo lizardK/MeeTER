@@ -51,7 +51,6 @@ Item {
 
                 function qmlCall(data) {
                     var d = JSON.parse(data);
-                    console.log("This call is in QML! : " + d.title);
                     stationInformations = d;
                 }
 
@@ -160,14 +159,14 @@ Item {
         mapWebView.evaluateJavaScript(s);
     }
 
-
     PositionSource {
         id: positionSource
-        updateInterval: 3000
+        updateInterval: 5000
         active:  mapItem.withGeolocation
         onPositionChanged: {
             if(positionSource.position.latitudeValid && positionSource.position.longitudeValid){
                 mapItem.position = positionSource.position.coordinate;
+                console.log("onPositionChanged");
                 mapItem.setCurrentPosition(positionSource.position.coordinate);
             }
         }

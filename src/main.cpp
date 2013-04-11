@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include <QDeclarativeContext>
 #include <QFile>
+#include <QGLWidget>
 #include <QDebug>
 #include "qmlapplicationviewer.h"
 #include "settings.h"
@@ -13,6 +14,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QApplication::setApplicationVersion("0.1");
 
     QmlApplicationViewer viewer;
+    viewer.setViewport(new QGLWidget);
 
     Settings settings("MeeTER", "meeter.conf");
     if(!QFile::exists(settings.filePath()))

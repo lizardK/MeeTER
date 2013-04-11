@@ -113,6 +113,7 @@ Page {
             width: listTravels.width;  height: 130
 
             MouseArea {
+                id: mArea
                 anchors.fill: parent
                 onClicked: {
                     onClicked: pageStack.push(Qt.resolvedUrl("TrainDetailsPage.qml"),{travelID: id, from: fromID, to:toID,date:date,duration:duration})

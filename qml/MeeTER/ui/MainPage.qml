@@ -79,6 +79,7 @@ Page {
 
         }
         delegate: menuItemDelegate
+        interactive:false
     }
 
     Component {
@@ -88,6 +89,7 @@ Page {
             width: listMenu.width;height: 80
 
             MouseArea {
+                id: mArea
                 anchors.fill: parent
                 onClicked:{
                     pageStack.push(Qt.resolvedUrl(page))
@@ -98,8 +100,13 @@ Page {
                 id: rect
                 width:  listMenu.width
                 height: parent.height
-                color: "transparent"
-
+                color:  {
+                    if(!mArea.pressed)
+                        return "transparent";
+                    if(theme.inverted)
+                        return "#333" ;
+                    return "#d2d2d2" ;
+                }
                 Rectangle {
                     id: x
                     width: parent.width - 90

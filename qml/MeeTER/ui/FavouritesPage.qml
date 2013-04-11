@@ -164,6 +164,7 @@ Page {
             id: menuItem
             width: listViewFavourites.width;height: 80
             MouseArea {
+                id: mArea
                 anchors.fill: parent
                 onClicked:{
                     pageStack.push(Qt.resolvedUrl("StationPage.qml"),{stationID:id,stationName:name, stationLatitude: lat, stationLongitude: lon, stationCity:city, stationCountry: country});
@@ -173,8 +174,14 @@ Page {
             Rectangle {
                 id: rect
                 width:  listViewFavourites.width;height: parent.height
-                color: "transparent"
 
+                color:  {
+                    if(!mArea.pressed)
+                        return "transparent";
+                    if(theme.inverted)
+                        return "#333" ;
+                    return "#d2d2d2" ;
+                }
                 Rectangle {
                     id: x
                     width: parent.width - 90

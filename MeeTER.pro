@@ -1,3 +1,5 @@
+QT += opengl
+
 # Add more folders to ship with the application, here
 folder_01.source = qml/MeeTER
 folder_01.target = qml

@@ -1,5 +1,14 @@
+meeter (0.0.3) unstable; urgency=low
+  * Add visual press on listview
+  * Fix BUG QML Webview crash on task switching
+
+
+ -- cyril <c.biencourt@orange.fr>  Thu, 11 Apr 2013 10:55:30 +0200
+
 meeter (0.0.2) unstable; urgency=low
-  * <Add change description here>
+  * Add favourites stations
+  * Add user settings
+  * Fix BUG multiple instances
 
  -- cyril <c.biencourt@orange.fr>  Sun, 31 Mar 2013 19:47:28 +0200
 

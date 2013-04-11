@@ -102,6 +102,7 @@ Page {
             width: listTravels.width; height: 130
 
             MouseArea {
+                id: mArea
                 anchors.fill: parent
                 onClicked: {
                     onClicked: pageStack.push(Qt.resolvedUrl("TrainDetailsPage.qml"),{travelID: id,from:stationPage.from, to: stationPage.to,date:dateTime,duration:duration})
@@ -131,7 +132,13 @@ Page {
                 Rectangle {
                     id: x
                     width: parent.width - 90; height: parent.height
-                    color: "transparent"
+                    color:  {
+                        if(!mArea.pressed)
+                            return "transparent";
+                        if(theme.inverted)
+                            return "#333" ;
+                        return "#d2d2d2" ;
+                    }
 
                     Image {
                         id: columnImage
