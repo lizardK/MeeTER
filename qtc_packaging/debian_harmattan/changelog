@@ -1,3 +1,8 @@
+meeter (0.0.4) unstable; urgency=low
+  * FIX BUG landscape mode
+
+ -- cyril <c.biencourt@orange.fr>  Thu, 18 Apr 2013 20:44:26 +0200
+
 meeter (0.0.3) unstable; urgency=low
   * Add visual press on listview
   * Fix BUG QML Webview crash on task switching

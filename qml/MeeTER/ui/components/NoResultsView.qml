@@ -35,6 +35,7 @@ Rectangle {
        text: qsTr("Aucun résultat")
        wrapMode: Text.WordWrap
        horizontalAlignment: Text.AlignHCenter
-       font.pointSize: 30
+       font.pointSize: 34
+       color: theme.inverted? "#999" :  "#333"
     }
 }

@@ -69,119 +69,128 @@ Page {
         title: "Rechercher un train"
     }
 
-    SectionHeader {
-        id: infosHeader
-        title: qsTr("Départ - Arrivée")
+    Flickable {
+        width: search.width; height: search.height - pageHeader.height
         anchors {
             top: pageHeader.bottom
-            topMargin: 20
-            bottomMargin: 20
         }
-    }
+       contentWidth: parent.width; contentHeight: btnSearch.y +btnSearch.height + 20
+       clip: true
 
-    SectionHeader {
-        id: dateHeader
-        title: qsTr("Date")
-        anchors {
-            top: columnStations.bottom
-            topMargin: 20
-            bottomMargin: 20
-        }
-    }
-
-    DateSelector {
-        id: dateSelector
-        anchors {
-            top: dateHeader.bottom
-            topMargin: 20
-            bottomMargin: 20
-        }
-        width: parent.width
-        placeholder: qsTr("le ")
-    }
-
-    SectionHeader {
-        id: timeHeader
-        title: qsTr("Heure")
-        anchors {
-            top: dateSelector.bottom
-            topMargin: 20
-            bottomMargin: 20
-        }
-    }
-
-    Column {
-        id: columnTime
-        anchors {
-            top: timeHeader.bottom
-            topMargin: 20
-            bottomMargin: 20
-        }
-        width: parent.width
-        spacing: 5
-
-        TimeSelector {
-            id: startTime
-            width: parent.width
-            placeholder: qsTr("entre ")
-        }
-
-        TimeSelector {
-            id: endTime
-            width: parent.width
-            placeholder: qsTr("et ")
-        }
-
-    }
-
-    Button {
-        id: btnSearch
-        x: parent.width / 2 - btnSearch.width / 2
-        anchors {
-            top: columnTime.bottom
-            topMargin: 20
-        }
-
-        onClicked: {
-            if(textFieldDeparture.value !== "" && textFieldArrival.value !== "") {
-                stationID = textFieldDeparture.value;
-                pageStack.push(Qt.resolvedUrl("ResultsPage.qml"),{from:stationID,
-                                   to:textFieldArrival.value,
-                                   date: dateSelector.date,
-                                   dateService: dateSelector.dateServiceFormatted,
-                                   startTime: startTime.timeServiceFormatted,
-                                   endTime:endTime.timeServiceFormatted
-                               });
+        SectionHeader {
+            id: infosHeader
+            title: qsTr("Départ - Arrivée")
+            anchors {
+                top: parent.top
+                topMargin: 20
+                bottomMargin: 20
             }
         }
 
-        text: qsTr("Rechercher")
-    }
-
-    Column {
-        id: columnStations
-        anchors {
-            top: infosHeader.bottom
-            topMargin: 20
-            bottomMargin: 20
-        }
-        width: parent.width
-        spacing: 5
-
-        TextFieldCompleter {
-            id: textFieldDeparture
-            width: parent.width
-            model: stationsModel
-            placeholder: qsTr("Départ")
-            visible: true// (stationID === undefined || stationID === "" )
+        SectionHeader {
+            id: dateHeader
+            title: qsTr("Date")
+            anchors {
+                top: columnStations.bottom
+                topMargin: 20
+                bottomMargin: 20
+            }
         }
 
-        TextFieldCompleter {
-            id: textFieldArrival
+        DateSelector {
+            id: dateSelector
+            anchors {
+                top: dateHeader.bottom
+                topMargin: 20
+                bottomMargin: 20
+            }
             width: parent.width
-            model: stationsModel
-            placeholder: qsTr("Arrivée")
-            z: -1
+            placeholder: qsTr("le ")
+        }
+
+        SectionHeader {
+            id: timeHeader
+            title: qsTr("Heure")
+            anchors {
+                top: dateSelector.bottom
+                topMargin: 20
+                bottomMargin: 20
+            }
+        }
+
+        Column {
+            id: columnTime
+            anchors {
+                top: timeHeader.bottom
+                topMargin: 20
+                bottomMargin: 20
+            }
+            width: parent.width
+            spacing: 5
+
+            TimeSelector {
+                id: startTime
+                width: parent.width
+                placeholder: qsTr("entre ")
+            }
+
+            TimeSelector {
+                id: endTime
+                width: parent.width
+                placeholder: qsTr("et ")
+            }
+
+        }
+
+        Button {
+            id: btnSearch
+            x: parent.width / 2 - btnSearch.width / 2
+            anchors {
+                top: columnTime.bottom
+                topMargin: 20
+            }
+
+            onClicked: {
+                if(textFieldDeparture.value !== "" && textFieldArrival.value !== "") {
+                    stationID = textFieldDeparture.value;
+                    pageStack.push(Qt.resolvedUrl("ResultsPage.qml"),{from:stationID,
+                                       to:textFieldArrival.value,
+                                       date: dateSelector.date,
+                                       dateService: dateSelector.dateServiceFormatted,
+                                       startTime: startTime.timeServiceFormatted,
+                                       endTime:endTime.timeServiceFormatted
+                                   });
+                }
+            }
+
+            text: qsTr("Rechercher")
+        }
+
+        Column {
+            id: columnStations
+            anchors {
+                top: infosHeader.bottom
+                topMargin: 20
+                bottomMargin: 20
+            }
+            width: parent.width
+            spacing: 5
+
+            TextFieldCompleter {
+                id: textFieldDeparture
+                width: parent.width
+                model: stationsModel
+                placeholder: qsTr("Départ")
+                visible: true
+            }
+
+            TextFieldCompleter {
+                id: textFieldArrival
+                width: parent.width
+                model: stationsModel
+                placeholder: qsTr("Arrivée")
+                z: -1
+            }
         }
     }
 

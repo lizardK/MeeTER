@@ -35,6 +35,7 @@ Rectangle {
         text: qsTr("Une erreur est survenue lors de la connexion au service")
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignHCenter
-        font.pointSize: 30
+        font.pointSize: 34
+        color: theme.inverted? "#999" :  "#333"
     }
 }

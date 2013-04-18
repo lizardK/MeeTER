@@ -42,8 +42,10 @@ Page {
 
     ToolBar{
         id:toolBarStation
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: 0
+        }
         tools:  ToolBarLayout {
             id: trainDetailsTool
             visible: true
@@ -73,6 +75,25 @@ Page {
                     }
                 }
             }
+            ToolButton {
+                id: toolButtonNextDeparture
+               // iconSource: Utils.handleIconSource("toolbar-next")
+                visible: screen.currentOrientation == Screen.Landscape
+                text: qsTr("Départs")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("TrainsOfDayPage.qml"),{stationID: stationPage.stationID})
+                }
+            }
+            ToolButton {
+                id: toolButtonSearch
+               // iconSource: Utils.handleIconSource("toolbar-search")
+                visible: screen.currentOrientation == Screen.Landscape
+                text: qsTr("Rechercher")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("SearchPage.qml"),{stationID: stationPage.stationID})
+                }
+            }
+
             ToolIcon {
                 platformIconId: "toolbar-view-menu"
                 anchors.right: (parent === undefined) ? undefined : parent.right
@@ -89,8 +110,9 @@ Page {
 
     PageHeader {
         id: pageHeader
-        title: qsTr("Chercher un train")
+        title: qsTr("Gare")
     }
+
 
     MapWebView {
         id: map
@@ -122,7 +144,8 @@ Page {
 
             SectionHeader {
                 id: infosHeader
-                title: qsTr("informations")            }
+                title: qsTr("informations")
+            }
 
             Row {
                 anchors.top: infosHeader.bottom
@@ -174,6 +197,7 @@ Page {
             width: parent.width; height: parent.height - infos.height
             anchors.top: infos.bottom
             color: "transparent"
+            visible: screen.currentOrientation == Screen.Portrait
 
             SectionHeader {
                 id: optionsHeader
@@ -185,6 +209,8 @@ Page {
                 anchors.top: optionsHeader.bottom
                 width: parent.width; height: parent.height
                 clip:true
+                interactive:false
+
                 model: ListModel{
                     ListElement {
                         desc: "Les prochains départs"
@@ -197,67 +223,67 @@ Page {
                 }
                 delegate: menuItemDelegate
             }
+        }
 
-            Component {
-                id: menuItemDelegate
-                Item {
-                    id: menuItem
-                    width: listMenu.width; height: 80
+        Component {
+            id: menuItemDelegate
+            Item {
+                id: menuItem
+                width: listMenu.width; height: 80
 
-                    MouseArea {
-                        id:mArea
-                        anchors.fill: parent
-                        onClicked: {
-                            pageStack.push(Qt.resolvedUrl(page),{stationID: stationPage.stationID})
-                        }
+                MouseArea {
+                    id:mArea
+                    anchors.fill: parent
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl(page),{stationID: stationPage.stationID})
                     }
+                }
 
+                Rectangle {
+                    id: rect
+                    width:  listMenu.width;  height: parent.height
+                    color:  {
+                        if(!mArea.pressed)
+                            return "transparent";
+                        if(theme.inverted)
+                            return "#333" ;
+                        return "#d2d2d2" ;
+                    }
                     Rectangle {
-                        id: rect
-                        width:  listMenu.width;  height: parent.height
-                        color:  {
-                            if(!mArea.pressed)
-                                return "transparent";
-                            if(theme.inverted)
-                                return "#333" ;
-                            return "#d2d2d2" ;
-                        }
-                        Rectangle {
-                            id: x
-                            width: parent.width - 90
-                            y:20
-                            Column {
-                                id:c
-                                Label {
-                                    id: lblDesc
-                                    x: 10; y: 15
-                                    text:  desc
-                                    platformStyle: LabelStyle {
-                                        fontFamily: "Arial"
-                                        fontPixelSize: 26
-                                    }
+                        id: x
+                        width: parent.width - 90
+                        y:20
+                        Column {
+                            id:c
+                            Label {
+                                id: lblDesc
+                                x: 10; y: 15
+                                text:  desc
+                                platformStyle: LabelStyle {
+                                    fontFamily: "Arial"
+                                    fontPixelSize: 26
                                 }
                             }
                         }
+                    }
 
-                        Image {
-                            id: imgNext
-                            anchors{
-                                right: parent.right
-                                top: parent.top
-                                topMargin: parent.height / 2 - imgNext.height / 2
-                            }
-                            source: Utils.handleIconSource("toolbar-next")
+                    Image {
+                        id: imgNext
+                        anchors{
+                            right: parent.right
+                            top: parent.top
+                            topMargin: parent.height / 2 - imgNext.height / 2
                         }
+                        source: Utils.handleIconSource("toolbar-next")
+                    }
 
-                    }
-                    Rectangle {
-                        width: listMenu.width -10;height: 1
-                        x: 5
-                        anchors.top: menuItem.bottom
-                        border.width: 1
-                        border.color: "#fff"
-                    }
+                }
+                Rectangle {
+                    width: listMenu.width -10;height: 1
+                    x: 5
+                    anchors.top: menuItem.bottom
+                    border.width: 1
+                    border.color: "#fff"
                 }
             }
         }
