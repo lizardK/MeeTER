@@ -54,6 +54,7 @@ Page {
     ListModel {
         id:stationsModel
         Component.onCompleted: Services.fetchAllStations(stationsModel)
+
         function onFetch(data){
 
             for ( var index in data  ){

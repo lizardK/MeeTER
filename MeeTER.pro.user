@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by Qt Creator 2.4.1, 2013-04-18T20:47:22. -->
+<!-- Written by Qt Creator 2.4.1, 2013-05-03T19:44:06. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -174,11 +174,13 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">MaemoUploadAndInstallDpkgPackageStep</value>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles">
        <value type="QString">/home/cyril/MeeTER-build-harmattan-Harmattan_Target_-_QEmu_PR1_2__Qt_SDK__Release/meeter_0.0.3_armel.deb</value>
+       <value type="QString">/home/cyril/MeeTER-build-harmattan-Harmattan_Target_-_QEmu_PR1_2__Qt_SDK__Release/meeter_0.0.5_armel.deb</value>
        <value type="QString">/home/cyril/MeeTER-build-harmattan-Harmattan_Target_-_QEmu_PR1_2__Qt_SDK__Release/meeter_0.0.2_armel.deb</value>
        <value type="QString">/home/cyril/MeeTER-build-harmattan-Harmattan_Target_-_QEmu_PR1_2__Qt_SDK__Release/meeter_0.0.4_armel.deb</value>
        <value type="QString">/home/cyril/MeeTER-build-harmattan-Harmattan_Target_-_QEmu_PR1_2__Qt_SDK__Release/meeter_0.0.1_armel.deb</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
+       <value type="QString">192.168.0.10</value>
        <value type="QString">192.168.0.10</value>
        <value type="QString">192.168.0.10</value>
        <value type="QString">192.168.0.10</value>
@@ -189,9 +191,11 @@
        <value type="QString"></value>
        <value type="QString"></value>
        <value type="QString"></value>
+       <value type="QString"></value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
        <value type="QDateTime">2013-04-18T19:53:39</value>
+       <value type="QDateTime">2013-05-03T19:43:55</value>
        <value type="QDateTime">2013-04-08T08:28:01</value>
        <value type="QDateTime">2013-04-18T20:45:30</value>
        <value type="QDateTime">2013-03-31T16:02:33</value>

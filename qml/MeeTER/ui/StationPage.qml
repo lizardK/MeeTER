@@ -133,7 +133,10 @@ Page {
 
     Rectangle {
         id: container
-        anchors.top: map.bottom
+        anchors {
+            top: map.bottom
+            topMargin: 10
+        }
         height: parent.height /2; width: parent.width
         color: "transparent"
 
@@ -141,7 +144,10 @@ Page {
             id: infos
             width: container.width; height: 100
             color: "transparent"
-
+            anchors {
+                top: parent.top
+                topMargin: 5
+            }
             SectionHeader {
                 id: infosHeader
                 title: qsTr("informations")
